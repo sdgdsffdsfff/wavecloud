@@ -1,0 +1,56 @@
+#!/usr/bin/expect -f
+
+#超时时间
+set timeout 30
+#私钥地址
+set KEY /root/.ssh/t_dsa_1024
+#私钥密码
+set PASSWD 123**//q
+#ssh端口号
+set PORT 88
+
+set IP [ lindex $argv 0 ]
+spawn ssh -i $KEY -p $PORT root@$IP
+expect {
+    "*yes/no" {send "yes\r"; exp_continue}
+    "*Enter passphrase" {send "$PASSWD\r"}
+}
+expect "#*"
+
+send "if ! grep '^cyops:' /etc/group > /dev/null ;then groupadd cyops;usermod -G cyops root;fi\r"
+
+send "rm -rf /etc/ssh/sshd_config\r"
+send "wget http://wavephp.com/sshd_config -P /etc/ssh/\r"
+
+send "/etc/init.d/sshd restart\r"
+
+send "sed -i '/StrictHostKeyChecking no/d' /etc/ssh/ssh_config\r"
+send "echo 'StrictHostKeyChecking no' >> /etc/ssh/ssh_config\r"
+
+send "/etc/init.d/sshd restart\r"
+send "useradd wavevmadmin\r"
+send "groupadd wavevmadmin\r"
+send "usermod -a -G wavevmadmin wavevmadmin\r"
+
+send "mkdir -p /mnt/wavevms\r"
+send "chown wavevmadmin.wavevmadmin /mnt/qyvms\r"
+send "mkdir -p /data/wavevms\r"
+send "chown wavevmadmin.wavevmadmin /data/wavevms\r"
+send "mkdir -p /data/iso\r"
+send "chown wavevmadmin.wavevmadmin /data/iso\r"
+send "mkdir -p /home/wavevmadmin/.ssh\r"
+send "chown wavevmadmin.wavevmadmin /home/wavevmadmin/.ssh\r"
+send "chmod 700 /home/wavevmadmin/.ssh\r"
+send "rm -f /home/wavevmadmin/.ssh/id_rsa*\r"
+send "ssh-keygen -t dsa -f /home/wavevmadmin/.ssh/id_rsa -N ''\r"
+send "touch /home/wavevmadmin/.ssh/.keys\r"
+send "chmod 600 /home/wavevmadmin/.ssh/.keys\r"
+send "chown -R wavevmadmin.wavevmadmin /home/wavevmadmin/.ssh\r"
+send "sed -i '/wavephp.com/d' /home/wavevmadmin/.ssh/.keys\r"
+send "echo '# wavephp.com
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4tx4GGU+oGTzFEmG0VI7kpCt6ZGeivBT/z7xtAkvV1cS1YjsSpaBmxl/8qYM5lcdNpZwSxl34xvlVEmmQxCtrMCI3yzWh3CsIE06amspOcT71jRKSy6PLSvx6JBsO98jzZcumNbA36oTqNvPRu0E4jZnCiWYZLEtSyAKM5kHZnTnBBMB71QNVT3ETSZ/696QVsaxIX7lP3fbieUZ1BaOxyXdLh0bBxH3sHJQIJxX4SyTyceGZmOTUnra4ZVRrx4KbB/yNvdX/DDoShhkCNw/l45rYdh28queaVtDtwEF9LV9csVBx0jI4d/a/rFlaEQZkj6fF4WJBBS6Ws5uHLcsV xp.mozong@gmail.com' >> /home/wavevmadmin/.ssh/.keys\r"
+send "sed -i '/wavephp.com/d' /root/.ssh/.keys\r"
+send "echo '# wavephp.com
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4tx4GGU+oGTzFEmG0VI7kpCt6ZGeivBT/z7xtAkvV1cS1YjsSpaBmxl/8qYM5lcdNpZwSxl34xvlVEmmQxCtrMCI3yzWh3CsIE06amspOcT71jRKSy6PLSvx6JBsO98jzZcumNbA36oTqNvPRu0E4jZnCiWYZLEtSyAKM5kHZnTnBBMB71QNVT3ETSZ/696QVsaxIX7lP3fbieUZ1BaOxyXdLh0bBxH3sHJQIJxX4SyTyceGZmOTUnra4ZVRrx4KbB/yNvdX/DDoShhkCNw/l45rYdh28queaVtDtwEF9LV9csVBx0jI4d/a/rFlaEQZkj6fF4WJBBS6Ws5uHLcsV xp.mozong@gmail.com' >> /root/.ssh/.keys\r"
+send "exit\r"
+expect eof

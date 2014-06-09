@@ -1,0 +1,60 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+.sidebar-nav {
+    padding: 9px 0;
+}
+.nav-collapse .navbar-text a{ margin-right: 20px;}
+.main{ width: 95%; margin: 0 auto;}
+.controlsdiv{ padding-top: 5px;}
+
+@media (max-width: 980px) {
+    /* Enable use of floated navbar text */
+    .navbar-text.pull-right {
+        float: none;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+th.center,td.center {
+    text-align: center;
+}
+table.display tr.even.row_selected td {
+    background-color: #B0BED9;
+}
+table.display tr.odd.row_selected td {
+    background-color: #9FAFD1;
+}
+
+.radio-group{ margin: 0 auto; width: 52%;}
+.radio{ float: left; margin-right: 20px;}
+form fieldset {
+    border: 1px solid #DDDDDD;
+    border-radius: 3px;
+}
+fieldset legend {
+    background: none repeat scroll 0 0 #FFFFFF;
+    font-weight: bold;
+    margin: 0 0 0 13px;
+    padding: 0 3px;
+    font-size: 18px;
+}
+
+#ranged{ display: none;}
+#sl1{ width: 300px;}
+.slider-selection {
+    background: none repeat scroll 0 0 #0088CC;
+}
+#data-partition{ padding-top: 4px;}
+#data-partition .data-radio{ margin: 0;}
+.box-header .alert{ margin:  10px 0;}
+.netbox{ padding: 5px 0;}
+.netbox input[type="checkbox"]{ margin:-1px 0 0 0;}
+#t-pm{ padding: 10px;}
+
+/*loading*/
+.load-mask,.loading-box{ position: absolute; display: none; height: 100%; z-index: 9999}
+.load-mask{top:0;left:0; background: #fff; opacity: .5; filter: alpha(opacity=50);filter: "alpha(opacity=50)" zoom: 1;;width: 100%; height: 436px;z-index: 9998;}
+.loading-box{left:45%;top:50%;margin:-16px 0 0 -16px;}
